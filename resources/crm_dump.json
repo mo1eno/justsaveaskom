@@ -1,0 +1,100 @@
+{
+  "deals": [
+    {
+      "id": 1,
+      "type": "квартира",
+      "rooms": 1,
+      "area": 35,
+      "district": "Центральный",
+      "total_price": 5200000
+    },
+    {
+      "id": 2,
+      "type": "квартира",
+      "rooms": 2,
+      "area": 55,
+      "district": "Центральный",
+      "total_price": 8300000
+    },
+    {
+      "id": 3,
+      "type": "квартира",
+      "rooms": 3,
+      "area": 75,
+      "district": "Центральный",
+      "total_price": 12000000
+    },
+    {
+      "id": 4,
+      "type": "квартира",
+      "rooms": 1,
+      "area": 40,
+      "district": "Луговая",
+      "total_price": 4800000
+    },
+    {
+      "id": 5,
+      "type": "квартира",
+      "rooms": 2,
+      "area": 60,
+      "district": "Луговая",
+      "total_price": 7900000
+    },
+    {
+      "id": 6,
+      "type": "квартира",
+      "rooms": 3,
+      "area": 80,
+      "district": "Луговая",
+      "total_price": 9900000
+    },
+    {
+      "id": 7,
+      "type": "квартира",
+      "rooms": 2,
+      "area": 50,
+      "district": "Чуркин",
+      "total_price": 7300000
+    },
+    {
+      "id": 8,
+      "type": "квартира",
+      "rooms": 1,
+      "area": 38,
+      "district": "Чуркин",
+      "total_price": 4600000
+    },
+    {
+      "id": 9,
+      "type": "квартира",
+      "rooms": 3,
+      "area": 78,
+      "district": "Чуркин",
+      "total_price": 9800000
+    },
+    {
+      "id": 10,
+      "type": "квартира",
+      "rooms": 1,
+      "area": 33,
+      "district": "Снеговая Падь",
+      "total_price": 3900000
+    },
+    {
+      "id": 11,
+      "type": "квартира",
+      "rooms": 2,
+      "area": 52,
+      "district": "Снеговая Падь",
+      "total_price": 6400000
+    },
+    {
+      "id": 12,
+      "type": "квартира",
+      "rooms": 3,
+      "area": 70,
+      "district": "Снеговая Падь",
+      "total_price": 9100000
+    }
+  ]
+}

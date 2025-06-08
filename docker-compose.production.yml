@@ -1,0 +1,21 @@
+networks:
+  service-gateway:
+    external: true
+
+services:
+  app:
+    image: registry.gitlab.com/askom/ru.askomservice.tai:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=service-gateway'
+      - 'traefik.http.routers.tai-askomservice-ru.rule=Host(`$APP_DOMAIN`)'
+      - 'traefik.http.routers.tai-askomservice-ru.tls=true'
+      - 'traefik.http.routers.tai-askomservice-ru.tls.certResolver=defaultResolver'
+      - 'traefik.http.services.tai-askomservice-ru.loadbalancer.server.port=3000'
+    networks:
+      - service-gateway
+
+

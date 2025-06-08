@@ -1,0 +1,50 @@
+image: mirror.gcr.io/docker:20.10.21-dind
+
+stages:
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+before_script:
+  - DOCKER_HOST= docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build:
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - docker buildx build -f ./Dockerfile --push -t $CI_REGISTRY_IMAGE:latest .
+
+deploy:
+  stage: deploy
+  variables:
+    DOCKER_HOST: 'ssh://$SSH_USER@$SSH_HOST'
+    COMPOSE_FILE: docker-compose.yml:docker-compose.production.yml
+  script:
+    - apk add bash
+    # Store all environment variables in dotenv file
+    - |
+      excludePrefixes="DOCKER HOME HOST CHAT CI SSH GITLAB TRIGGER PWD PATH HOME TERM FF COMPOSE SHLVL OLDPWD DIND IC_AD SONAR AA_C AA_B RUNNER TGBOT CORE"
+
+      excludedPrefixes="grep $(for i in $excludePrefixes; do echo "-e \"^$i\""; done | tr '\n' ' ')"
+      excludedVars=$(bash -c "compgen -v" | eval $excludedPrefixes | tr '\n' ' ')
+      excludedVars=$(for i in $excludedVars; do echo "-u $i"; done | tr '\n' ' ')
+
+      echo "$(eval "env $excludedVars")" > .env
+
+    # Set-up ssh key
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - eval $(ssh-agent -s)
+    - chmod 700 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+    # Deploy application to production
+    - docker compose pull --ignore-pull-failures app
+    - docker compose up -d --remove-orphans
+    - echo "[CI] Done"
